@@ -14,3 +14,4 @@ services:
      devices:
      - driver: nvidia
        capabilities: [ gpu, video ]
+  restart: always

@@ -1,6 +1,6 @@
 FROM python:3.10
 
-ARG FACEFUSION_VERSION=2.3.0
+ARG FACEFUSION_VERSION=v2.6.0.nsfw
 ENV GRADIO_SERVER_NAME=0.0.0.0
 
 WORKDIR /facefusion
@@ -9,5 +9,5 @@ RUN apt-get update
 RUN apt-get install curl -y
 RUN apt-get install ffmpeg -y
 
-RUN git clone https://github.com/facefusion/facefusion.git --branch ${FACEFUSION_VERSION} --single-branch .
-RUN python install.py --torch cpu --onnxruntime default --skip-venv
+RUN git clone https://github.com/xiongyumail/facefusion.git --branch ${FACEFUSION_VERSION} --single-branch .
+RUN python install.py --onnxruntime default --skip-conda
