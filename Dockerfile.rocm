@@ -15,3 +15,8 @@ RUN apt-get install ffmpeg -y
 
 RUN git clone https://github.com/xiongyumail/facefusion.git --branch ${FACEFUSION_VERSION} --single-branch .
 RUN python install.py --onnxruntime rocm --skip-conda
+
+# Install ffmpeg6 to solve ubuntu22.04 ffmpeg4 image error problem
+RUN apt-get install software-properties-common -y
+RUN add-apt-repository ppa:ubuntuhandbook1/ffmpeg6 -y
+RUN apt-get install ffmpeg -y
