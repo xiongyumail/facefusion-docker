@@ -1,0 +1,19 @@
+services:
+ facefusion-openvino:
+  build:
+   context: .
+   dockerfile: Dockerfile.openvino
+  command: [ 'python', 'facefusion.py', 'run', '--execution-providers', 'openvino' ]
+  volumes:
+  - .assets:/facefusion/.assets
+  - .caches:/facefusion/.caches
+  - .jobs:/facefusion/.jobs
+  ports:
+  - 7885:7860
+  deploy:
+   resources:
+    reservations:
+     devices:
+     - driver: openvino
+       count: all
+       capabilities: [ gpu, video ]
