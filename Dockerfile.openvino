@@ -1,5 +1,4 @@
-FROM rocm/dev-ubuntu-24.04:6.2
-FROM openvino/ubuntu24_dev:2024.6.0
+FROM ubuntu:24.04
 
 ARG FACEFUSION_VERSION=3.1.1
 ENV GRADIO_SERVER_NAME=0.0.0.0
@@ -14,6 +13,16 @@ RUN apt-get install pip -y
 RUN apt-get install git -y
 RUN apt-get install curl -y
 RUN apt-get install ffmpeg -y
+
+RUN apt-get install wget gpg -y
+RUN wget -qO - https://repositories.intel.com/gpu/intel-graphics.key | \
+    gpg --yes --dearmor --output /usr/share/keyrings/intel-graphics.gpg
+RUN echo "deb [arch=amd64,i386 signed-by=/usr/share/keyrings/intel-graphics.gpg] https://repositories.intel.com/gpu/ubuntu noble client" | \
+    tee /etc/apt/sources.list.d/intel-gpu-noble.list
+RUN apt-get update
+RUN apt-get install libze-intel-gpu1 libze1 intel-opencl-icd intel-gsc clinfo -y
+RUN apt-get install libze-dev intel-ocloc -y
+RUN apt-get install ocl-icd-opencl-dev -y
 
 RUN git clone https://github.com/facefusion/facefusion.git --branch ${FACEFUSION_VERSION} --single-branch .
 RUN python install.py --onnxruntime openvino --skip-conda
